@@ -11,44 +11,92 @@
 
 <body>
 
-<?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    try {
-        include "conexao.php";
+    <header
+        style="background:#1a2b4a; padding:0 40px; display:flex; align-items:center; justify-content:space-between; height:64px;">
 
-        $nome     = $_POST['nome'];
-        $endereco = $_POST['endereco'];
-        $depto    = $_POST['depto'];
-        $datanasc = $_POST['datanasc'];
+        <!-- Logo + Nav -->
+        <div style="display:flex; align-items:center; gap:32px;">
 
-        $target_dir  = "../img/";
-        $arquivo     = basename($_FILES["foto"]["name"]);
-        $target_file = $target_dir . $arquivo;
+            <a href="index.php" style="display:flex; align-items:center; gap:10px; text-decoration:none;">
+                <div
+                    style="width:34px; height:34px; background:#5b9bd5; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:18px;">
+                    &#9776;
+                </div>
+                <div style="line-height:1;">
+                    <div style="font-size:16px; font-weight:600; color:#fff; letter-spacing:-0.2px;">Nexora Tech</div>
+                    <div
+                        style="font-size:10px; color:#5b9bd5; letter-spacing:1px; text-transform:uppercase; margin-top:2px;">
+                        Gestão de Gerentes</div>
+                </div>
+            </a>
 
-        if (move_uploaded_file($_FILES["foto"]["tmp_name"], $target_file)) {
-            $sql  = "INSERT INTO gerentes (nome, endereco, depto, datanasc, foto) VALUES (?, ?, ?, ?, ?)";
-            $stmt = $conexao->prepare($sql);
-            $stmt->execute([$nome, $endereco, $depto, $datanasc, $arquivo]);
+            <nav style="display:flex; align-items:center; gap:4px;">
+                <a href="index.php"
+                    style="font-size:13px; color:#5b9bd5; text-decoration:none; padding:6px 12px; border-radius:6px; background:rgba(91,155,213,0.15);">
+                    Gerentes
+                </a>
+                <a href="#"
+                    style="font-size:13px; color:#8fa3be; text-decoration:none; padding:6px 12px; border-radius:6px;">
+                    Relatórios
+                </a>
+                <a href="#"
+                    style="font-size:13px; color:#8fa3be; text-decoration:none; padding:6px 12px; border-radius:6px;">
+                    Configurações
+                </a>
+            </nav>
 
-            echo "<div class='alert alert-success alert-dismissible fade show' role='alert'>
+        </div>
+
+
+        <div style="display:flex; align-items:center; gap:10px;">
+
+            <div style="width:0.5px; height:24px; background:rgba(255,255,255,0.12);"></div>
+            <div
+                style="width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,0.08); border:0.5px solid rgba(255,255,255,0.15); display:flex; align-items:center; justify-content:center; color:#8fa3be; cursor:pointer;">
+                &#128100;
+            </div>
+        </div>
+
+    </header>
+
+    <?php
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        try {
+            include "conexao.php";
+
+            $nome = $_POST['nome'];
+            $endereco = $_POST['endereco'];
+            $depto = $_POST['depto'];
+            $datanasc = $_POST['datanasc'];
+
+            $target_dir = "../img/";
+            $arquivo = basename($_FILES["foto"]["name"]);
+            $target_file = $target_dir . $arquivo;
+
+            if (move_uploaded_file($_FILES["foto"]["tmp_name"], $target_file)) {
+                $sql = "INSERT INTO gerentes (nome, endereco, depto, datanasc, foto) VALUES (?, ?, ?, ?, ?)";
+                $stmt = $conexao->prepare($sql);
+                $stmt->execute([$nome, $endereco, $depto, $datanasc, $arquivo]);
+
+                echo "<div class='alert alert-success alert-dismissible fade show' role='alert'>
                     <strong>Gerente cadastrado com sucesso!</strong> " . htmlspecialchars($arquivo) . " foi salvo.
                     <button type='button' class='btn-close' data-bs-dismiss='alert'></button>
                     <a href='../index.php' class='btn btn-primary btn-sm ms-2'>Ver listagem</a>
                   </div>";
-        } else {
-            echo "<div class='alert alert-warning alert-dismissible fade show' role='alert'>
+            } else {
+                echo "<div class='alert alert-warning alert-dismissible fade show' role='alert'>
                     <strong>Erro ao enviar imagem.</strong> O gerente não foi salvo.
                     <button type='button' class='btn-close' data-bs-dismiss='alert'></button>
                   </div>";
-        }
-    } catch (Exception $e) {
-        echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+            }
+        } catch (Exception $e) {
+            echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
                 <strong>Erro:</strong> " . $e->getMessage() . "
                 <button type='button' class='btn-close' data-bs-dismiss='alert'></button>
               </div>";
+        }
     }
-}
-?>
+    ?>
 
     <main class="container" style="padding-top:40px; padding-bottom:60px; max-width:820px;">
 
@@ -60,11 +108,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <img src="../img/imagenotfound.png" id="preview" class="incluir-foto" alt="Preview">
                 <div class="incluir-foto-overlay">
                     <label for="imagemnova" class="incluir-foto-label">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                        </svg>
                         Escolher foto
                     </label>
-                    <input type="file" id="imagemnova" name="foto" accept="image/*" required
-                           form="form-gerente" style="display:none;">
+                    <input type="file" id="imagemnova" name="foto" accept="image/*" required form="form-gerente"
+                        style="display:none;">
                 </div>
             </div>
 
@@ -86,14 +138,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         <div class="incluir-campo incluir-campo-full">
                             <label class="info-label" for="nome">Nome</label>
-                            <input type="text" class="form-control" id="nome" name="nome"
-                                   maxlength="80" required placeholder="Nome completo">
+                            <input type="text" class="form-control" id="nome" name="nome" maxlength="80" required
+                                placeholder="Nome completo">
                         </div>
 
                         <div class="incluir-campo">
                             <label class="info-label" for="depto">Departamento</label>
-                            <input type="text" class="form-control" id="depto" name="depto"
-                                   maxlength="50" required placeholder="Ex: Financeiro">
+                            <input type="text" class="form-control" id="depto" name="depto" maxlength="50" required
+                                placeholder="Ex: Financeiro">
                         </div>
 
                         <div class="incluir-campo">
@@ -103,16 +155,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         <div class="incluir-campo incluir-campo-full">
                             <label class="info-label" for="endereco">Endereço</label>
-                            <input type="text" class="form-control" id="endereco" name="endereco"
-                                   maxlength="100" required placeholder="Rua, número, bairro, cidade">
+                            <input type="text" class="form-control" id="endereco" name="endereco" maxlength="100"
+                                required placeholder="Rua, número, bairro, cidade">
                         </div>
 
                     </div>
 
                     <div class="card-acoes" style="margin-top:28px;">
                         <button type="submit" class="btn btn-primary">Salvar gerente</button>
-                        <button type="reset" class="btn btn-outline-secondary"
-                                onclick="document.getElementById('preview').src='../img/imagenotfound.png';
+                        <button type="reset" class="btn btn-outline-secondary" onclick="document.getElementById('preview').src='../img/imagenotfound.png';
                                          document.getElementById('preview-nome').textContent='Nome do gerente';
                                          document.getElementById('preview-depto').textContent='Departamento';">
                             Limpar
@@ -125,6 +176,85 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
 
     </main>
+
+    <footer style="background:#1a2b4a; color:#e0e6f0; font-family:sans-serif; padding:48px 40px 0 40px;">
+        <div
+            style="display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:32px; padding-bottom:40px; border-bottom:0.5px solid rgba(255,255,255,0.12);">
+
+            <div>
+                <p style="font-size:22px; font-weight:600; color:#fff; margin:0 0 4px;">Nexora Tech</p>
+                <p
+                    style="font-size:11px; letter-spacing:1.5px; color:#5b9bd5; text-transform:uppercase; margin:0 0 14px;">
+                    Soluções em Tecnologia</p>
+                <p style="font-size:13px; line-height:1.7; color:#8fa3be; margin:0 0 20px; max-width:260px;">
+                    Desenvolvemos sistemas inteligentes para empresas que querem crescer com eficiência, segurança e
+                    inovação.
+                </p>
+                <div style="display:flex; gap:10px;">
+                    <a href="#"
+                        style="width:34px;height:34px;border-radius:8px;border:0.5px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;color:#8fa3be;text-decoration:none;">in</a>
+                    <a href="#"
+                        style="width:34px;height:34px;border-radius:8px;border:0.5px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;color:#8fa3be;text-decoration:none;">ig</a>
+                    <a href="#"
+                        style="width:34px;height:34px;border-radius:8px;border:0.5px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;color:#8fa3be;text-decoration:none;">gh</a>
+                </div>
+            </div>
+
+            <div>
+                <div style="width:32px;height:3px;background:#5b9bd5;border-radius:2px;margin-bottom:16px;"></div>
+                <p style="font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:#fff;margin:0 0 16px;">
+                    Sistema</p>
+                <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;">
+                    <li><a href="index.php" style="font-size:13px;color:#8fa3be;text-decoration:none;">Listagem de
+                            gerentes</a></li>
+                    <li><a href="crud/incluir.php" style="font-size:13px;color:#8fa3be;text-decoration:none;">Incluir
+                            gerente</a></li>
+                    <li><a href="#" style="font-size:13px;color:#8fa3be;text-decoration:none;">Editar cadastro</a></li>
+                    <li><a href="#" style="font-size:13px;color:#8fa3be;text-decoration:none;">Relatórios</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <div style="width:32px;height:3px;background:#5b9bd5;border-radius:2px;margin-bottom:16px;"></div>
+                <p style="font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:#fff;margin:0 0 16px;">
+                    Empresa</p>
+                <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;">
+                    <li><a href="#" style="font-size:13px;color:#8fa3be;text-decoration:none;">Sobre nós</a></li>
+                    <li><a href="#" style="font-size:13px;color:#8fa3be;text-decoration:none;">Nossos serviços</a></li>
+                    <li><a href="#" style="font-size:13px;color:#8fa3be;text-decoration:none;">Cases de sucesso</a></li>
+                    <li><a href="#" style="font-size:13px;color:#8fa3be;text-decoration:none;">Blog</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <div style="width:32px;height:3px;background:#5b9bd5;border-radius:2px;margin-bottom:16px;"></div>
+                <p style="font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:#fff;margin:0 0 16px;">
+                    Contato</p>
+                <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;">
+                    <li><a href="#"
+                            style="font-size:13px;color:#8fa3be;text-decoration:none;">contato@nexoratech.com.br</a>
+                    </li>
+                    <li><a href="#" style="font-size:13px;color:#8fa3be;text-decoration:none;">(11) 9 8765-4321</a></li>
+                    <li><a href="#" style="font-size:13px;color:#8fa3be;text-decoration:none;">São Paulo, SP</a></li>
+                    <li><a href="#" style="font-size:13px;color:#8fa3be;text-decoration:none;">Seg–Sex, 08h–18h</a></li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 0;">
+            <p style="font-size:12px;color:#5b7495;margin:0;">© 2026 Nexora Tech. Todos os direitos reservados.</p>
+            <div style="display:flex;gap:8px;">
+                <span
+                    style="font-size:11px;color:#5b7495;border:0.5px solid rgba(255,255,255,0.1);border-radius:8px;padding:4px 10px;">Privacidade</span>
+                <span
+                    style="font-size:11px;color:#5b7495;border:0.5px solid rgba(255,255,255,0.1);border-radius:8px;padding:4px 10px;">Termos
+                    de uso</span>
+                <span
+                    style="font-size:11px;color:#5b7495;border:0.5px solid rgba(255,255,255,0.1);border-radius:8px;padding:4px 10px;">LGPD</span>
+            </div>
+        </div>
+    </footer>
 
     <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/smoothscroll.js"></script>
@@ -148,4 +278,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         });
     </script>
 </body>
+
 </html>
