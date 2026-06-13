@@ -51,7 +51,7 @@
             echo "<div class='alert alert-success alert-dismissible fade show' role='alert'>
                     <strong>Alterações salvas com sucesso!</strong>
                     <button type='button' class='btn-close' data-bs-dismiss='alert'></button>
-                    <a href='../index.php' class='btn btn-primary btn-sm ms-2'>Ver listagem</a>
+                    <a href='../index.php' class='btn btn-primary btn-sm ms-2'>Voltar</a>
                   </div>";
         }
 
@@ -83,7 +83,7 @@
 
     <main class="container" style="padding-top:40px; padding-bottom:60px; max-width:820px;">
 
-        <a href="../index.php" class="voltar-link">← Voltar para a listagem</a>
+        <a href="../index.php" class="voltar-link">← Voltar</a>
 
         <div class="perfil-card">
 

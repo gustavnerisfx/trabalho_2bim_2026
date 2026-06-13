@@ -6,10 +6,10 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
                 <div class="modal-body">
-                    ...
+                    Deseja Apagar?
                 </div>
                 <div class="modal-footer">
-                    <a id="confirmar" href="#" type="button" class="btn btn-secondary">Sim</a>
+                    <a id="confirmar" href="crud/excluir.php" type="button" class="btn btn-secondary">Sim</a>
                     <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Não</button>
                 </div>
             </div>
