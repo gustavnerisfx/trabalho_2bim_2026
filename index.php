@@ -188,7 +188,7 @@
                             gerentes</a></li>
                     <li><a href="crud/incluir.php" style="font-size:13px;color:#8fa3be;text-decoration:none;">Incluir
                             gerente</a></li>
-                    <li><a href="#" style="font-size:13px;color:#8fa3be;text-decoration:none;">Editar cadastro</a></li>
+                    <li><a href="index.php" style="font-size:13px;color:#8fa3be;text-decoration:none;">Editar cadastro</a></li>
                     <li><a href="#" style="font-size:13px;color:#8fa3be;text-decoration:none;">Relatórios</a></li>
                 </ul>
             </div>

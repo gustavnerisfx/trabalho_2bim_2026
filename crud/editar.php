@@ -15,7 +15,6 @@
     <header
         style="background:#1a2b4a; padding:0 40px; display:flex; align-items:center; justify-content:space-between; height:64px;">
 
-        <!-- Logo + Nav -->
         <div style="display:flex; align-items:center; gap:32px;">
 
             <a href="index.php" style="display:flex; align-items:center; gap:10px; text-decoration:none;">
@@ -241,11 +240,11 @@
                 <p style="font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:#fff;margin:0 0 16px;">
                     Sistema</p>
                 <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;">
-                    <li><a href="index.php" style="font-size:13px;color:#8fa3be;text-decoration:none;">Listagem de
+                    <li><a href="../index.php" style="font-size:13px;color:#8fa3be;text-decoration:none;">Listagem de
                             gerentes</a></li>
-                    <li><a href="crud/incluir.php" style="font-size:13px;color:#8fa3be;text-decoration:none;">Incluir
+                    <li><a href="incluir.php" style="font-size:13px;color:#8fa3be;text-decoration:none;">Incluir
                             gerente</a></li>
-                    <li><a href="#" style="font-size:13px;color:#8fa3be;text-decoration:none;">Editar cadastro</a></li>
+                    <li><a href="../index.php" style="font-size:13px;color:#8fa3be;text-decoration:none;">Editar cadastro</a></li>
                     <li><a href="#" style="font-size:13px;color:#8fa3be;text-decoration:none;">Relatórios</a></li>
                 </ul>
             </div>
