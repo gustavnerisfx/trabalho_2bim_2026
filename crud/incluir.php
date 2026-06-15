@@ -15,8 +15,7 @@
     <header
         style="background:#1a2b4a; padding:0 40px; display:flex; align-items:center; justify-content:space-between; height:64px; position:relative;">
 
-        <!-- Logo -->
-        <a href="index.php" style="display:flex; align-items:center; gap:10px; text-decoration:none; flex-shrink:0;">
+        <a href="../index.php" style="display:flex; align-items:center; gap:10px; text-decoration:none; flex-shrink:0;">
             <div
                 style="width:34px; height:34px; background:#5b9bd5; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:18px;">
                 &#9776;
@@ -29,10 +28,9 @@
             </div>
         </a>
 
-        <!-- Nav desktop (centralizada) -->
         <nav class="d-none d-md-flex align-items-center gap-1"
             style="position:absolute; left:50%; transform:translateX(-50%);">
-            <a href="index.php"
+            <a href="../index.php"
                 style="font-size:13px; color:#5b9bd5; text-decoration:none; padding:6px 12px; border-radius:6px; background:rgba(91,155,213,0.15);">Gerentes</a>
             <a href="#"
                 style="font-size:13px; color:#8fa3be; text-decoration:none; padding:6px 12px; border-radius:6px;">Relatórios</a>
@@ -40,7 +38,6 @@
                 style="font-size:13px; color:#8fa3be; text-decoration:none; padding:6px 12px; border-radius:6px;">Configurações</a>
         </nav>
 
-        <!-- Direita: avatar + hambúrguer -->
         <div class="d-flex align-items-center gap-2" style="flex-shrink:0;">
             <div
                 style="width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,0.08); border:0.5px solid rgba(255,255,255,0.15); display:flex; align-items:center; justify-content:center; color:#8fa3be; cursor:pointer;">
@@ -56,11 +53,10 @@
             </button>
         </div>
 
-        <!-- Menu mobile colapsável -->
         <div class="collapse d-md-none" id="mobileNav"
             style="position:absolute; top:64px; left:0; right:0; background:#1a2b4a; border-top:0.5px solid rgba(255,255,255,0.1); z-index:100;">
             <div class="d-flex flex-column p-3 gap-1">
-                <a href="index.php"
+                <a href="../index.php"
                     style="font-size:14px; color:#5b9bd5; text-decoration:none; padding:10px 12px; border-radius:6px; background:rgba(91,155,213,0.15);">Gerentes</a>
                 <a href="#"
                     style="font-size:14px; color:#8fa3be; text-decoration:none; padding:10px 12px; border-radius:6px;">Relatórios</a>
@@ -76,17 +72,23 @@
         try {
             include "conexao.php";
 
-            $nome = $_POST['nome'];
+            $nome     = $_POST['nome'];
             $endereco = $_POST['endereco'];
-            $depto = $_POST['depto'];
-            $datanasc = $_POST['datanasc'];
+            $depto    = $_POST['depto'];
+            $dataRaw  = $_POST['datanasc'];
+            $dataParts = explode('/', $dataRaw);
+            if (count($dataParts) === 3) {
+                $datanasc = $dataParts[2] . '-' . $dataParts[1] . '-' . $dataParts[0];
+            } else {
+                throw new Exception("Formato de data inválido.");
+            }
 
             $target_dir = "../img/";
-            $arquivo = basename($_FILES["foto"]["name"]);
+            $arquivo    = basename($_FILES["foto"]["name"]);
             $target_file = $target_dir . $arquivo;
 
             if (move_uploaded_file($_FILES["foto"]["tmp_name"], $target_file)) {
-                $sql = "INSERT INTO gerentes (nome, endereco, depto, datanasc, foto) VALUES (?, ?, ?, ?, ?)";
+                $sql  = "INSERT INTO gerentes (nome, endereco, depto, datanasc, foto) VALUES (?, ?, ?, ?, ?)";
                 $stmt = $conexao->prepare($sql);
                 $stmt->execute([$nome, $endereco, $depto, $datanasc, $arquivo]);
 
@@ -129,6 +131,7 @@
                     </label>
                     <input type="file" id="imagemnova" name="foto" accept="image/*" required form="form-gerente"
                         style="display:none;">
+                    <span class="erro" id="erroFoto" style="color:red;"></span>
                 </div>
             </div>
 
@@ -145,6 +148,7 @@
                 <div class="perfil-divider"></div>
 
                 <form id="form-gerente" action="incluir.php" method="post" enctype="multipart/form-data">
+                    <input type="hidden" id="datanasc" name="datanasc">
 
                     <div class="incluir-grid">
 
@@ -152,34 +156,35 @@
                             <label class="info-label" for="nome">Nome</label>
                             <input type="text" class="form-control" id="nome" name="nome" maxlength="80" required
                                 placeholder="Nome completo">
+                            <span class="erro" id="erroNome" style="color:red;"></span>
                         </div>
 
                         <div class="incluir-campo">
                             <label class="info-label" for="depto">Departamento</label>
                             <input type="text" class="form-control" id="depto" name="depto" maxlength="50" required
                                 placeholder="Ex: Financeiro">
+                            <span class="erro" id="erroDepto" style="color:red;"></span>
                         </div>
 
                         <div class="incluir-campo">
-                            <label class="info-label" for="datanasc">Data de Nascimento</label>
-                            <input type="date" class="form-control" id="datanasc" name="datanasc" required>
+                            <label class="info-label" for="datanascMask">Data de Nascimento</label>
+                            <input type="text" class="form-control" id="datanascMask"
+                                placeholder="DD/MM/AAAA" maxlength="10" autocomplete="off">
+                            <span class="erro" id="erroData" style="color:red;"></span>
                         </div>
 
                         <div class="incluir-campo incluir-campo-full">
                             <label class="info-label" for="endereco">Endereço</label>
                             <input type="text" class="form-control" id="endereco" name="endereco" maxlength="100"
                                 required placeholder="Rua, número, bairro, cidade">
+                            <span class="erro" id="erroEndereco" style="color:red;"></span>
                         </div>
 
                     </div>
 
                     <div class="card-acoes" style="margin-top:28px;">
                         <button type="submit" class="btn btn-primary">Salvar gerente</button>
-                        <button type="reset" class="btn btn-outline-secondary" onclick="document.getElementById('preview').src='../img/imagenotfound.png';
-                                         document.getElementById('preview-nome').textContent='Nome do gerente';
-                                         document.getElementById('preview-depto').textContent='Departamento';">
-                            Limpar
-                        </button>
+                        <button type="button" class="btn btn-outline-secondary" id="btnLimpar">Limpar</button>
                         <a href="../index.php" class="btn btn-outline-danger">Cancelar</a>
                     </div>
 
@@ -193,7 +198,6 @@
 
         <div class="row g-4 pb-4" style="border-bottom:0.5px solid rgba(255,255,255,0.12);">
 
-            <!-- Marca -->
             <div class="col-12 col-md-5 col-lg-4">
                 <p style="font-size:22px; font-weight:600; color:#fff; margin:0 0 4px;">Nexora Tech</p>
                 <p
@@ -207,13 +211,12 @@
                     <a href="#"
                         style="width:34px;height:34px;border-radius:8px;border:0.5px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;color:#8fa3be;text-decoration:none;">in</a>
                     <a href="#"
-                        style="width:34px;height:34px;border-radius:8px;border:0.5px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;color:#8fa3be;text-decoration:none;">ig</a>
+                        style="width:34px;height:34px;border-radius:08px;border:0.5px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;color:#8fa3be;text-decoration:none;">ig</a>
                     <a href="#"
                         style="width:34px;height:34px;border-radius:8px;border:0.5px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;color:#8fa3be;text-decoration:none;">gh</a>
                 </div>
             </div>
 
-            <!-- Sistema -->
             <div class="col-6 col-md-2 offset-md-1 col-lg-2 offset-lg-2">
                 <div style="width:32px;height:3px;background:#5b9bd5;border-radius:2px;margin-bottom:16px;"></div>
                 <p style="font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:#fff;margin:0 0 16px;">
@@ -228,7 +231,6 @@
                 </ul>
             </div>
 
-            <!-- Empresa -->
             <div class="col-6 col-md-2 col-lg-2">
                 <div style="width:32px;height:3px;background:#5b9bd5;border-radius:2px;margin-bottom:16px;"></div>
                 <p style="font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:#fff;margin:0 0 16px;">
@@ -241,7 +243,6 @@
                 </ul>
             </div>
 
-            <!-- Contato -->
             <div class="col-12 col-md-2 col-lg-2">
                 <div style="width:32px;height:3px;background:#5b9bd5;border-radius:2px;margin-bottom:16px;"></div>
                 <p style="font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:#fff;margin:0 0 16px;">
@@ -276,25 +277,165 @@
 
     <script src="../js/bootstrap.bundle.min.js"></script>
     <script src="../js/smoothscroll.js"></script>
+
     <script>
-        document.getElementById('imagemnova').addEventListener('change', function (e) {
-            const file = e.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = ev => document.getElementById('preview').src = ev.target.result;
-            reader.readAsDataURL(file);
-        });
+        document.addEventListener('DOMContentLoaded', function () {
 
-        document.getElementById('nome').addEventListener('input', function () {
-            const el = document.getElementById('preview-nome');
-            el.textContent = this.value || 'Nome do gerente';
-        });
+            const form       = document.getElementById('form-gerente');
+            const maskInput  = document.getElementById('datanascMask');
+            const hiddenData = document.getElementById('datanasc');
 
-        document.getElementById('depto').addEventListener('input', function () {
-            const el = document.getElementById('preview-depto');
-            el.textContent = this.value || 'Departamento';
+            maskInput.addEventListener('input', function () {
+                let v = this.value.replace(/\D/g, '');
+
+                if (v.length > 2 && v.length <= 4) {
+                    v = v.slice(0, 2) + '/' + v.slice(2);
+                } else if (v.length > 4) {
+                    v = v.slice(0, 2) + '/' + v.slice(2, 4) + '/' + v.slice(4, 8);
+                }
+
+                this.value = v;
+            });
+
+            maskInput.addEventListener('keydown', function (e) {
+                const allowed = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab'];
+                if (allowed.includes(e.key)) return;
+                if (!/^\d$/.test(e.key)) e.preventDefault();
+            });
+
+            document.getElementById('imagemnova').addEventListener('change', function () {
+                const erroFoto = document.getElementById('erroFoto');
+                erroFoto.textContent = '';
+                const arquivo = this.files[0];
+                if (!arquivo) return;
+
+                const tiposPermitidos = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                if (!tiposPermitidos.includes(arquivo.type)) {
+                    erroFoto.textContent = 'Formato inválido. Use JPG, PNG, GIF ou WEBP.';
+                    this.value = '';
+                    return;
+                }
+
+                if (arquivo.size > 2 * 1024 * 1024) {
+                    erroFoto.textContent = 'A imagem deve ter no máximo 2 MB.';
+                    this.value = '';
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = ev => document.getElementById('preview').src = ev.target.result;
+                reader.readAsDataURL(arquivo);
+            });
+
+            document.getElementById('nome').addEventListener('input', function () {
+                document.getElementById('preview-nome').textContent = this.value || 'Nome do gerente';
+            });
+
+            document.getElementById('depto').addEventListener('input', function () {
+                document.getElementById('preview-depto').textContent = this.value || 'Departamento';
+            });
+
+            document.getElementById('btnLimpar').addEventListener('click', function () {
+                form.reset();
+                maskInput.value = '';
+                hiddenData.value = '';
+                document.getElementById('preview').src = '../img/imagenotfound.png';
+                document.getElementById('preview-nome').textContent = 'Nome do gerente';
+                document.getElementById('preview-depto').textContent = 'Departamento';
+                document.querySelectorAll('.erro').forEach(el => el.textContent = '');
+            });
+
+            function limparErros() {
+                document.querySelectorAll('.erro').forEach(el => el.textContent = '');
+            }
+
+            function parseDateBR(str) {
+                if (!/^\d{2}\/\d{2}\/\d{4}$/.test(str)) return null;
+                const [d, m, y] = str.split('/').map(Number);
+                const dt = new Date(y, m - 1, d);
+                if (dt.getFullYear() !== y || dt.getMonth() !== m - 1 || dt.getDate() !== d) return null;
+                return dt;
+            }
+
+            form.addEventListener('submit', function (event) {
+                let valido = true;
+                limparErros();
+
+                const foto = document.getElementById('imagemnova');
+                if (!foto.files || foto.files.length === 0) {
+                    document.getElementById('erroFoto').textContent = 'A foto é obrigatória.';
+                    valido = false;
+                }
+
+                const nome = document.getElementById('nome').value.trim();
+                if (nome === '') {
+                    document.getElementById('erroNome').textContent = 'O nome é obrigatório.';
+                    valido = false;
+                } else if (nome.length < 3) {
+                    document.getElementById('erroNome').textContent = 'O nome deve ter ao menos 3 caracteres.';
+                    valido = false;
+                }
+
+                const depto = document.getElementById('depto').value.trim();
+                if (depto === '') {
+                    document.getElementById('erroDepto').textContent = 'O departamento é obrigatório.';
+                    valido = false;
+                } else if (depto.length > 50) {
+                    document.getElementById('erroDepto').textContent = 'O departamento excede o tamanho máximo.';
+                    valido = false;
+                }
+
+                const endereco = document.getElementById('endereco').value.trim();
+                if (endereco === '') {
+                    document.getElementById('erroEndereco').textContent = 'O endereço é obrigatório.';
+                    valido = false;
+                } else if (endereco.length > 100) {
+                    document.getElementById('erroEndereco').textContent = 'O endereço excede o tamanho máximo.';
+                    valido = false;
+                }
+
+                const dataStr   = maskInput.value.trim();
+                const erroDataEl = document.getElementById('erroData');
+
+                if (dataStr === '') {
+                    erroDataEl.textContent = 'A data de nascimento é obrigatória.';
+                    valido = false;
+                } else {
+                    const nascimento = parseDateBR(dataStr);
+
+                    if (!nascimento) {
+                        erroDataEl.textContent = 'Data inválida. Use o formato DD/MM/AAAA.';
+                        valido = false;
+                    } else {
+                        const hoje = new Date();
+                        hoje.setHours(0, 0, 0, 0);
+
+                        if (nascimento >= hoje) {
+                            erroDataEl.textContent = 'A data de nascimento não pode ser hoje ou no futuro.';
+                            valido = false;
+                        } else {
+                            const limiteIdade = new Date(hoje);
+                            limiteIdade.setFullYear(hoje.getFullYear() - 16);
+
+                            if (nascimento > limiteIdade) {
+                                erroDataEl.textContent = 'É necessário ter ao menos 16 anos.';
+                                valido = false;
+                            }
+                        }
+                    }
+                }
+
+                if (valido) {
+
+                    hiddenData.value = maskInput.value.trim();
+                } else {
+                    event.preventDefault();
+                }
+            });
+
         });
     </script>
+
 </body>
 
 </html>

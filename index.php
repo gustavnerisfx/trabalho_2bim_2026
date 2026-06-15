@@ -14,7 +14,6 @@
     <header
         style="background:#1a2b4a; padding:0 40px; display:flex; align-items:center; justify-content:space-between; height:64px; position:relative;">
 
-        <!-- Logo -->
         <a href="index.php" style="display:flex; align-items:center; gap:10px; text-decoration:none; flex-shrink:0;">
             <div
                 style="width:34px; height:34px; background:#5b9bd5; border-radius:8px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:18px;">
@@ -28,7 +27,6 @@
             </div>
         </a>
 
-        <!-- Nav desktop (centralizada) -->
         <nav class="d-none d-md-flex align-items-center gap-1"
             style="position:absolute; left:50%; transform:translateX(-50%);">
             <a href="index.php"
@@ -39,7 +37,6 @@
                 style="font-size:13px; color:#8fa3be; text-decoration:none; padding:6px 12px; border-radius:6px;">Configurações</a>
         </nav>
 
-        <!-- Direita: avatar + hambúrguer -->
         <div class="d-flex align-items-center gap-2" style="flex-shrink:0;">
             <div
                 style="width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,0.08); border:0.5px solid rgba(255,255,255,0.15); display:flex; align-items:center; justify-content:center; color:#8fa3be; cursor:pointer;">
@@ -55,7 +52,6 @@
             </button>
         </div>
 
-        <!-- Menu mobile colapsável -->
         <div class="collapse d-md-none" id="mobileNav"
             style="position:absolute; top:64px; left:0; right:0; background:#1a2b4a; border-top:0.5px solid rgba(255,255,255,0.1); z-index:100;">
             <div class="d-flex flex-column p-3 gap-1">
@@ -171,7 +167,6 @@
 
         <div class="row g-4 pb-4" style="border-bottom:0.5px solid rgba(255,255,255,0.12);">
 
-            <!-- Marca -->
             <div class="col-12 col-md-5 col-lg-4">
                 <p style="font-size:22px; font-weight:600; color:#fff; margin:0 0 4px;">Nexora Tech</p>
                 <p
@@ -191,7 +186,6 @@
                 </div>
             </div>
 
-            <!-- Sistema -->
             <div class="col-6 col-md-2 offset-md-1 col-lg-2 offset-lg-2">
                 <div style="width:32px;height:3px;background:#5b9bd5;border-radius:2px;margin-bottom:16px;"></div>
                 <p style="font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:#fff;margin:0 0 16px;">
@@ -206,7 +200,6 @@
                 </ul>
             </div>
 
-            <!-- Empresa -->
             <div class="col-6 col-md-2 col-lg-2">
                 <div style="width:32px;height:3px;background:#5b9bd5;border-radius:2px;margin-bottom:16px;"></div>
                 <p style="font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:#fff;margin:0 0 16px;">
@@ -219,7 +212,6 @@
                 </ul>
             </div>
 
-            <!-- Contato -->
             <div class="col-12 col-md-2 col-lg-2">
                 <div style="width:32px;height:3px;background:#5b9bd5;border-radius:2px;margin-bottom:16px;"></div>
                 <p style="font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:#fff;margin:0 0 16px;">
