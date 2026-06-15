@@ -8,10 +8,10 @@ use databanco;
 CREATE TABLE IF NOT EXISTS gerentes (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(50),
-    endereco VARCHAR(50),
-    depto VARCHAR(20),
+    endereco VARCHAR(100),
+    depto VARCHAR(50),
     datanasc DATETIME,
-    foto VARCHAR(20)
+    foto VARCHAR(100)
 ) DEFAULT CHARSET=utf8;
 
 INSERT INTO gerentes (nome, endereco, depto, datanasc, foto) VALUES 
